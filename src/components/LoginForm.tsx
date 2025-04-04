@@ -17,6 +17,7 @@ export default function LoginForm() {
       await signIn(email, password);
       alert("로그인 성공!");
     } catch (error) {
+      console.error("로그인 실패:", error);
       setError("로그인에 실패했습니다. 이메일과 비밀번호를 확인하세요.");
     }
   };

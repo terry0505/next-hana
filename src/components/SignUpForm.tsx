@@ -14,6 +14,7 @@ export default function SignUpForm() {
       await signup(email, password);
       alert("회원가입 성공! 로그인하세요.");
     } catch (error) {
+      console.error("회원가입 실패:", error);
       setError("회원가입 실패. 다시 시도해주세요.");
     }
   };
