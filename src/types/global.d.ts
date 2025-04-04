@@ -2,6 +2,12 @@ export {};
 
 declare global {
   interface Window {
-    gtag?: (...args: any[]) => void;
+    gtag?: (
+      command: "config" | "event",
+      targetIdOrEventName: string,
+      config?: {
+        [key: string]: string | number | boolean | undefined;
+      }
+    ) => void;
   }
 }

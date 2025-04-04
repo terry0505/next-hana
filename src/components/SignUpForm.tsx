@@ -13,7 +13,7 @@ export default function SignUpForm() {
     try {
       await signup(email, password);
       alert("회원가입 성공! 로그인하세요.");
-    } catch (err) {
+    } catch (error) {
       setError("회원가입 실패. 다시 시도해주세요.");
     }
   };
