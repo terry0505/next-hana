@@ -1,0 +1,55 @@
+@import "../variables";
+@import "../mixins";
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: $primary-color;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    font-size: $font-size-large;
+
+    a {
+      color: white;
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  nav {
+    display: flex;
+    gap: 15px;
+
+    a {
+      color: white;
+      text-decoration: none;
+      font-size: $font-size-base;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    p {
+      margin: 0;
+      font-size: $font-size-base;
+    }
+
+    button {
+      @include button-style(#e74c3c);
+      font-size: 14px;
+      padding: 8px 12px;
+    }
+  }
+}

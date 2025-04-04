@@ -2,6 +2,7 @@
 
 import { signIn } from "@/lib/auth";
 import { useState } from "react";
+import "@/styles/components/auth.scss";
 
 export default function LoginForm() {
   const [email, setEmail] = useState("");
@@ -21,7 +22,7 @@ export default function LoginForm() {
   };
 
   return (
-    <form onSubmit={handleSignIn}>
+    <form onSubmit={handleSignIn} className="auth-form">
       <input
         type="email"
         placeholder="이메일을 입력하세요."
@@ -35,7 +36,7 @@ export default function LoginForm() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button type="submit">로그인</button>
-      {error && <p>{error}</p>}
+      {error && <p className="auth-error">{error}</p>}
     </form>
   );
 }

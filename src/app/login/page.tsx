@@ -1,25 +1,24 @@
 "use client";
 
-import SignUpForm from "@/components/SignUpForm";
-import { useAuth } from "@/hooks/useAuth";
-import { signInWithGoogle, signInWithGitHub } from "@/lib/auth";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { signInWithGoogle, signInWithGitHub } from "@/lib/auth";
+import LoginForm from "@/components/LoginForm";
+import { useAuth } from "@/hooks/useAuth";
 import "@/styles/components/auth.scss";
 import "@/styles/components/button.scss";
 
-export default function SignupPage() {
+export default function LoginPage() {
   const router = useRouter();
   const { user } = useAuth();
 
   useEffect(() => {
-    if (user) {
-      router.push("/");
-    }
+    if (user) router.push("/");
   }, [user, router]);
+
   return (
     <div className="auth-container">
-      <SignUpForm />
+      <LoginForm />
       <div className="button-wrap">
         <button className="button" onClick={signInWithGoogle}>
           Google 회원가입/로그인

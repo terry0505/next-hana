@@ -1,0 +1,15 @@
+@import "../variables";
+@import "../mixins";
+
+.button {
+  @include button-style($secondary-color);
+}
+
+.button-wrap {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  .button {
+    flex: 1;
+  }
+}
