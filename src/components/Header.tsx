@@ -15,6 +15,8 @@ export default function Header() {
         <p>로딩 중...</p>
       ) : user ? (
         <div className="user-info">
+          <Link href="/post/write">글 작성</Link>
+          <Link href="/posts">글 목록</Link>
           <p>환영합니다, {user.displayName || user.email}!</p>
           <button onClick={logOut}>로그아웃</button>
         </div>

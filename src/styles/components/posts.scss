@@ -1,0 +1,52 @@
+@import "../variables";
+
+.post-list {
+  max-width: 600px;
+  margin: 20px auto;
+}
+
+.post-item {
+  background: white;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.post-item button {
+  margin-right: 5px;
+  padding: 5px 10px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.post-item button:first-of-type {
+  background-color: #f39c12;
+  color: white;
+}
+
+.post-item button:last-of-type {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.post-form-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.post-form-container input,
+.post-form-container textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
