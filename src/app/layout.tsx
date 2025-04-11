@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import Header from "@/components/Header";
+import "@/styles/globals.scss";
 
 export const metadata: Metadata = {
   title: "My Next.js App",

@@ -1,12 +1,13 @@
+import { NextResponse } from "next/server";
 import { db } from "@/lib/firebase";
 import {
-  addDoc,
   collection,
+  addDoc,
   getDocs,
+  query,
   orderBy,
-  query
+  serverTimestamp
 } from "firebase/firestore";
-import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -35,10 +36,10 @@ export async function POST(req: Request) {
   try {
     const { eventName, eventData } = await req.json();
 
-    await addDoc(collection(db, "anaytics"), {
+    await addDoc(collection(db, "analytics"), {
       eventName,
       eventData,
-      timestamp: new Date()
+      timestamp: serverTimestamp()
     });
 
     return NextResponse.json({ success: true });
