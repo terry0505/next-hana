@@ -36,7 +36,7 @@ export default function HomeClient() {
   if (loading) return <p>로딩 중...</p>;
 
   return (
-    <main>
+    <main className="home-page">
       <h1>Google Analytics 데이터</h1>
       <table summary="Google Analytics 데이터">
         <thead>
@@ -53,7 +53,9 @@ export default function HomeClient() {
                 <td>{row.eventName}</td>
                 <td>{JSON.stringify(row.eventData)}</td>
                 <td>
-                  {new Date(row.timestamp.seconds * 1000).toLocaleString()}
+                  {row.timestamp?.seconds != null
+                    ? new Date(row.timestamp.seconds * 1000).toLocaleString()
+                    : "시간 없음"}
                 </td>
               </tr>
             ))
