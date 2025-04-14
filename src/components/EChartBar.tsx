@@ -16,12 +16,6 @@ interface Props {
   data: AnalyticsRow[];
 }
 
-const PAGE_LABELS: Record<string, string> = {
-  "/": "메인 (/)",
-  "/posts": "글목록(/posts)",
-  "/post/write": "글작성 (/post/write)"
-};
-
 export default function EChartBar({ data }: Props) {
   const chartRef = useRef<HTMLDivElement>(null);
 
@@ -30,8 +24,8 @@ export default function EChartBar({ data }: Props) {
 
     const chart = echarts.init(chartRef.current);
 
-    //데이터 분리
-    const stayTimeByPage: Record<string, number[]> = {};
+    // 데이터 분리
+    const stayTimesByPage: Record<string, number[]> = {};
     const pageViewCounts: Record<string, number> = {};
 
     data.forEach((row) => {
@@ -40,8 +34,8 @@ export default function EChartBar({ data }: Props) {
 
       if (row.eventName === "stay_time") {
         const time = row.eventData.stay_time || 0;
-        if (!stayTimeByPage[page]) stayTimeByPage[page] = [];
-        stayTimeByPage[page].push(time);
+        if (!stayTimesByPage[page]) stayTimesByPage[page] = [];
+        stayTimesByPage[page].push(time);
       }
 
       if (row.eventName === "page_view") {
@@ -50,9 +44,16 @@ export default function EChartBar({ data }: Props) {
       }
     });
     const pages = PAGE_ORDER.filter(
-      (page) => stayTimeByPage[page] || pageViewCounts[page]
+      (page) => stayTimesByPage[page] || pageViewCounts[page]
     );
 
+    const labels = pages.map((page) => PAGE_LABELS[page] || page);
+    const avgStayTimes = pages.map((page) => {
+      const times = stayTimesByPage[page];
+      if (!times || times.length === 0) return 0;
+      const sum = times.reduce((a, b) => a + b, 0);
+      return Math.round(sum / times.length);
+    });
     const viewCounts = pages.map((page) => pageViewCounts[page] || 0);
 
     chart.setOption({
@@ -101,6 +102,7 @@ export default function EChartBar({ data }: Props) {
         }
       ]
     });
+
     const handleResize = () => chart.resize();
     window.addEventListener("resize", handleResize);
 
