@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/hooks/useAuth";
-import EChartBar from "@/components/EChartBar";
+import EChartBar from "@/components/charts/EChartBar";
 import { formatTimestamp } from "@/utils";
 import { PAGE_ORDER } from "@/constants/page";
 

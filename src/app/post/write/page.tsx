@@ -1,4 +1,4 @@
-import AddPostForm from "@/components/AddPostForm";
+import AddPostForm from "@/components/posts/AddPostForm";
 
 export const metadata = {
   title: "글 작성 | Next.js + Firebase + GA",

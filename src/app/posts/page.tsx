@@ -1,4 +1,4 @@
-import PostList from "@/components/PostList";
+import PostList from "@/components/posts/PostList";
 
 export const metadata = {
   title: "글 목록 | Next.js + Firebase + GA",

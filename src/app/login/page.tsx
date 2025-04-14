@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { signInWithGoogle, signInWithGitHub } from "@/lib/auth";
-import LoginForm from "@/components/LoginForm";
+import LoginForm from "@/components/auth/LoginForm";
 import { useAuth } from "@/hooks/useAuth";
 import "@/styles/components/auth.scss";
 import "@/styles/components/button.scss";

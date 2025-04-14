@@ -1,6 +1,6 @@
 "use client";
 
-import SignUpForm from "@/components/SignUpForm";
+import SignUpForm from "@/components/auth/SignUpForm";
 import { useAuth } from "@/hooks/useAuth";
 import { signInWithGoogle, signInWithGitHub } from "@/lib/auth";
 import { useRouter } from "next/navigation";
