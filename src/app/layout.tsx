@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
-import GoogleAnalytics from "@/components/analytics/GoogleAnalytics";
-import Header from "@/components/layout/Header";
+import { GoogleAnalytics } from "@/components/analytics";
+import { Header } from "@/components/layout";
 import "@/styles/globals.scss";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import "toastr/build/toastr.min.css";
 
 export const metadata: Metadata = {
-  title: "My Next.js App",
+  title: "Next.js + Firebase App",
   description: "Next.js + Firebase + GA 교육 자료"
 };
 export default function RootLayout({
@@ -27,7 +29,7 @@ export default function RootLayout({
               function gtag(){ dataLayer.push(arguments); }
               gtag('js', new Date());
               gtag('config', '${process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID}', {
-                page_path: window.location.pathname,
+                send_page_view: false
               });
             `
           }}
@@ -36,7 +38,7 @@ export default function RootLayout({
       <body>
         <Header />
         {children}
-        <GoogleAnalytics />
+        <GoogleAnalytics /> {/* 클라이언트 컴포넌트 추가 */}
       </body>
     </html>
   );

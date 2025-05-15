@@ -15,20 +15,29 @@ import {
 import { db } from "./firebase";
 import { PostData } from "@/types/post";
 
-//게시글 추가 (Create)
+function extractThumbnailFromMarkdown(content: string): string {
+  const match = content.match(/!\[.*?\]\((.*?)\)/);
+  return match ? match[1] : "";
+}
+
+// 게시글 추가 (Create)
 export const addPost = async (
   title: string,
   content: string,
   author: string
 ) => {
   try {
+    const thumbnailUrl = extractThumbnailFromMarkdown(content);
+
     const docRef = await addDoc(collection(db, "posts"), {
       title,
       content,
       author,
+      thumbnailUrl,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp()
     });
+
     return docRef.id;
   } catch (error) {
     console.error("게시글 추가 오류:", error);
