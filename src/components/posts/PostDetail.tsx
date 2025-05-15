@@ -5,6 +5,13 @@ import { useAuth } from "@/hooks/useAuth";
 import { deletePost, updatePost } from "@/lib/firestore";
 import { useState } from "react";
 import { PostData } from "@/types/post";
+import dynamic from "next/dynamic";
+import "@toast-ui/editor/dist/toastui-editor-viewer.css";
+
+const Viewer = dynamic(
+  () => import("@toast-ui/react-editor").then((mod) => mod.Viewer),
+  { ssr: false }
+);
 
 interface Props {
   post: PostData;
@@ -31,29 +38,6 @@ export default function PostDetail({ post }: Props) {
     setIsEditing(false);
   };
 
-  if (isEditing) {
-    return (
-      <div style={{ padding: "2rem" }}>
-        <h2>글 수정</h2>
-        <input
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          placeholder="제목"
-        />
-        <br />
-        <textarea
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="내용"
-          rows={6}
-        />
-        <br />
-        <button onClick={handleUpdate}>수정 완료</button>
-        <button onClick={() => setIsEditing(false)}>취소</button>
-      </div>
-    );
-  }
-
   return (
     <main style={{ padding: "2rem" }}>
       <h1>{post.title}</h1>
@@ -64,7 +48,9 @@ export default function PostDetail({ post }: Props) {
 
       {isAuthor && (
         <div style={{ marginTop: "1rem" }}>
-          <button onClick={() => setIsEditing(true)}>✏ 수정</button>
+          <button onClick={() => router.push(`/posts/${post.id}/update`)}>
+            ✏ 수정
+          </button>
           <button onClick={handleDelete} style={{ marginLeft: "1rem" }}>
             🗑 삭제
           </button>

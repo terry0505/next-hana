@@ -63,7 +63,10 @@ export default function PostList() {
             <p className="author">작성자: {post.author}</p>
             {user && user.email === post.author && (
               <>
-                <button onClick={() => handleEdit(post)}>수정</button>
+                {/* <button onClick={() => handleEdit(post)}>수정</button> */}
+                <Link href={`/posts/${post.id}/update`}>
+                  <button>수정</button>
+                </Link>
                 <button onClick={() => handleDelete(post.id)}>삭제</button>
               </>
             )}
