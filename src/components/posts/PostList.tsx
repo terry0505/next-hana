@@ -1,16 +1,16 @@
-"use client";
+'use client';
 
-import { useAuth } from "@/hooks/useAuth";
-import { deletePost, subscribeToPosts, updatePost } from "@/lib/firestore";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { subscribeToPosts, deletePost } from '@/lib/firestore';
+import '@/styles/components/posts.scss';
+import { useAuth } from '@/hooks/useAuth';
+import Link from 'next/link';
+import { Post } from '@/types/post';
+import Image from 'next/image';
 
 export default function PostList() {
   const { user } = useAuth();
-  const [posts, setPosts] = useState<any[]>([]);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [editingPost, setEditingPost] = useState<any | null>(null);
+  const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
     const unsubscribe = subscribeToPosts(setPosts);
@@ -20,56 +20,52 @@ export default function PostList() {
   const handleDelete = async (id: string) => {
     await deletePost(id);
   };
-  const handleUpdate = async () => {
-    if (!editingPost) return;
-    await updatePost(editingPost.id, title, content);
-    setEditingPost(null); //수정 완료 후 폼 닫기
-  };
-  const handleEdit = async (post: any) => {
-    setEditingPost(post);
-    setTitle(post.title);
-    setContent(post.content);
-  };
+
+  const cleanedStr = (str: string) =>
+    str
+      .replace(/!\[.*?\]\(.*?\)/g, '') // 마크다운 이미지 제거
+      .replace(/\n+/g, ' ') // 줄바꿈을 공백으로 변경
+      .trim();
 
   return (
-    <div className="post-list">
+    <div className='post-list'>
       <h2>게시글 목록</h2>
-      {editingPost ? (
-        <div className="post-form-container">
-          <h2>게시글 수정</h2>
-          <input
-            type="text"
-            placeholder="제목"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-          <textarea
-            placeholder="내용"
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          ></textarea>
-          <button onClick={handleUpdate}>수정 완료</button>
-          <button onClick={() => setEditingPost(null)}>취소</button>
-        </div>
-      ) : posts.length === 0 ? (
-        <p>게시글이 없습니다.</p>
-      ) : (
-        posts.map((post) => (
-          <div key={post.id} className="post-item">
-            <Link href={`/posts/${post.id}`}>
-              <h3 className="post-title clickable">{post.title}</h3>
-            </Link>
-            <p>{post.content}</p>
-            <p className="author">작성자: {post.author}</p>
-            {user && user.email === post.author && (
-              <>
-                <button onClick={() => handleEdit(post)}>수정</button>
-                <button onClick={() => handleDelete(post.id)}>삭제</button>
-              </>
-            )}
-          </div>
-        ))
-      )}
+      <div className='post-item-wrap'>
+        {posts.length === 0 ? (
+          <p>게시글이 없습니다.</p>
+        ) : (
+          posts.map((post) => (
+            <div key={post.id} className='post-item'>
+              <Link href={`/posts/${post.id}`}>
+                <div className='thumbnail-title'>
+                  <div className='thumbnail-area'>
+                    <Image
+                      src={post.thumbnailUrl || '/next.svg'}
+                      width={218}
+                      height={150}
+                      alt='썸네일'
+                      className='thumbnail'
+                    />
+                  </div>
+                  <div className='text-preview'>
+                    <h3 className='post-title'>{post.title}</h3>
+                    <p className='post-content'>{cleanedStr(post.content)}</p>
+                  </div>
+                </div>
+              </Link>
+              <p className='author'>작성자: {post.author}</p>
+              {user && user.email === post.author && (
+                <div className='post-btns'>
+                  <Link href={`/posts/${post.id}/update`}>
+                    <button>수정</button>
+                  </Link>
+                  <button onClick={() => handleDelete(post.id)}>삭제</button>
+                </div>
+              )}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }

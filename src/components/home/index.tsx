@@ -1,27 +1,28 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
-import EChartBar from "@/components/charts/EChartBar";
-import { formatTimestamp } from "@/utils";
-import { PAGE_ORDER } from "@/constants/page";
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/useAuth';
+import EChartBar from '@/components/charts/EChartBar';
+import { formatTimestamp } from '@/utils';
+import { PAGE_ORDER } from '@/constants/page';
 
-import "@/styles/components/home.scss";
+import '@/styles/components/home.scss';
+import { AnalyticsEvent } from '@/types/analytics';
 
 export default function Home() {
-  const [analytics, setAnalytics] = useState<any[]>([]);
+  const [analytics, setAnalytics] = useState<AnalyticsEvent[]>([]);
   const { user, loading } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
     async function fetchAnalytics() {
       try {
-        const res = await fetch("/api/analytics");
+        const res = await fetch('/api/analytics');
         const data = await res.json();
         setAnalytics(data);
       } catch (error) {
-        console.error("GA 데이터를 가져오는 중 오류 발생:", error);
+        console.error('GA 데이터를 가져오는 중 오류 발생:', error);
       }
     }
 
@@ -30,14 +31,14 @@ export default function Home() {
 
   useEffect(() => {
     if (!loading && !user) {
-      router.push("/login");
+      router.push('/login');
     }
   }, [user, loading, router]);
 
   if (loading) {
     return (
-      <main className="home-page">
-        <p className="loading">로딩 중...</p>
+      <main className='home-page'>
+        <p className='loading'>로딩 중...</p>
       </main>
     );
   }
@@ -54,27 +55,35 @@ export default function Home() {
     }
   > = {};
 
-  analytics.forEach((row: any) => {
+  analytics.forEach((row: AnalyticsEvent) => {
     const page = row.eventData?.page;
     if (!page) return;
 
     if (!pageStats[page]) {
       pageStats[page] = {
         stayTimes: [],
-        views: 0
+        views: 0,
       };
     }
 
-    if (row.eventName === "stay_time") {
+    if (row.eventName === 'stay_time') {
       pageStats[page].stayTimes.push(row.eventData.stay_time || 0);
-      pageStats[page].title = row.eventData.page_title || "";
-      pageStats[page].description = row.eventData.page_description || "";
+      pageStats[page].title = row.eventData.page_title || '';
+      pageStats[page].description = row.eventData.page_description || '';
 
       const currentLastSeen = pageStats[page].lastSeen;
-      const newTimestamp =
-        row.timestamp && typeof row.timestamp.seconds === "number"
-          ? new Date(row.timestamp.seconds * 1000)
-          : new Date(row.timestamp);
+
+      let newTimestamp: Date;
+      if (
+        typeof row.timestamp === 'object' &&
+        row.timestamp !== null &&
+        'seconds' in row.timestamp &&
+        typeof (row.timestamp as any).seconds === 'number'
+      ) {
+        newTimestamp = new Date((row.timestamp as any).seconds * 1000);
+      } else {
+        newTimestamp = new Date(row.timestamp as string | number);
+      }
 
       const newLastSeen = formatTimestamp(newTimestamp);
 
@@ -86,7 +95,7 @@ export default function Home() {
       }
     }
 
-    if (row.eventName === "page_view") {
+    if (row.eventName === 'page_view') {
       pageStats[page].views++;
     }
   });
@@ -100,8 +109,8 @@ export default function Home() {
   ).filter(([, stat]) => !!stat);
 
   return (
-    <main className="home-page">
-      <h1>📊 페이지 체류 시간</h1>
+    <main className='home-page'>
+      <h1>📊 페이지 체류 시간 목록</h1>
       <EChartBar data={analytics} />
       <table>
         <thead>

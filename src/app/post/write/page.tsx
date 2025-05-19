@@ -1,14 +1,10 @@
-import AddPostForm from "@/components/posts/AddPostForm";
+'use client';
 
-export const metadata = {
-  title: "글 작성 | Next.js + Firebase + GA",
-  description: "Next.js + Firebase + GA 글 작성 페이지입니다."
-};
+import { AddPostForm } from '@/components/posts';
 
-export default function WritePostPage() {
+export default function WritePage() {
   return (
     <main>
-      <h1>게시글 작성</h1>
       <AddPostForm />
     </main>
   );

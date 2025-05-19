@@ -4,12 +4,12 @@ import {
   signInWithPopup,
   signOut,
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword
-} from "firebase/auth";
-import { auth } from "./firebase";
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
+import { auth } from './firebase';
 
-//회원가입
-export const signup = async (email: string, password: string) => {
+// 회원가입
+export const signUp = async (email: string, password: string) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -18,12 +18,12 @@ export const signup = async (email: string, password: string) => {
     );
     return userCredential.user;
   } catch (error) {
-    console.log("회원가입 에러:", error);
+    console.error('회원가입 에러:', error);
     throw error;
   }
 };
 
-//이메일 로그인
+// 이메일 로그인
 export const signIn = async (email: string, password: string) => {
   try {
     const userCredential = await signInWithEmailAndPassword(
@@ -33,7 +33,7 @@ export const signIn = async (email: string, password: string) => {
     );
     return userCredential.user;
   } catch (error) {
-    console.log("로그인 에러:", error);
+    console.error('로그인 에러:', error);
     throw error;
   }
 };
@@ -45,7 +45,7 @@ export const signInWithGoogle = async () => {
     const result = await signInWithPopup(auth, provider);
     return result.user;
   } catch (error) {
-    console.error("Google 로그인 에러:", error);
+    console.error('Google 로그인 에러:', error);
     throw error;
   }
 };
@@ -57,7 +57,7 @@ export const signInWithGitHub = async () => {
     const result = await signInWithPopup(auth, provider);
     return result.user;
   } catch (error) {
-    console.error("GitHub 로그인 에러:", error);
+    console.error('GitHub 로그인 에러:', error);
     throw error;
   }
 };
@@ -67,7 +67,7 @@ export const logOut = async () => {
   try {
     await signOut(auth);
   } catch (error) {
-    console.error("로그아웃 에러:", error);
+    console.error('로그아웃 에러:', error);
     throw error;
   }
 };
