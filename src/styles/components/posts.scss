@@ -1,8 +1,14 @@
-@import "../variables";
+@import '../variables';
 
+.post-detail,
 .post-list {
   max-width: 1024px;
   margin: 30px auto 0;
+}
+
+.post-detail {
+}
+.post-list {
   .post-item-wrap {
     margin-top: 30px;
     display: flex;
@@ -88,29 +94,27 @@
       }
     }
 
-    .post-form-container {
-      max-width: 600px;
-      margin: 20px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      // text-align: center;
-    }
-
-    .post-form-container input,
-    .post-form-container textarea {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
     .post-markdown {
       background-color: #fff;
       padding: 30px;
       margin-top: 30px;
     }
+  }
+}
+
+.post-form-container {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
   }
 }
