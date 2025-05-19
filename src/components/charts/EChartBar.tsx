@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import * as echarts from "echarts";
-import { useEffect, useRef } from "react";
-import { PAGE_ORDER, PAGE_LABELS } from "@/constants/page";
+import * as echarts from 'echarts';
+import { useEffect, useRef } from 'react';
+import { PAGE_ORDER, PAGE_LABELS } from '@/constants/page';
 
 interface AnalyticsRow {
-  eventName: "stay_time" | "page_view";
+  eventName: 'stay_time' | 'page_view';
   eventData: {
     page: string;
     stay_time?: number;
@@ -32,13 +32,13 @@ export default function EChartBar({ data }: Props) {
       const page = row.eventData.page;
       if (!page) return;
 
-      if (row.eventName === "stay_time") {
+      if (row.eventName === 'stay_time') {
         const time = row.eventData.stay_time || 0;
         if (!stayTimesByPage[page]) stayTimesByPage[page] = [];
         stayTimesByPage[page].push(time);
       }
 
-      if (row.eventName === "page_view") {
+      if (row.eventName === 'page_view') {
         if (!pageViewCounts[page]) pageViewCounts[page] = 0;
         pageViewCounts[page]++;
       }
@@ -58,59 +58,59 @@ export default function EChartBar({ data }: Props) {
 
     chart.setOption({
       title: {
-        text: "페이지별 체류시간 & 페이지뷰 수",
-        left: "center"
+        text: '페이지별 체류시간 & 페이지뷰 수',
+        left: 'center',
       },
       tooltip: {
-        trigger: "axis"
+        trigger: 'axis',
       },
       legend: {
-        data: ["평균 체류시간 (초)", "페이지뷰 수"],
-        top: 30
+        data: ['평균 체류시간 (초)', '페이지뷰 수'],
+        top: 30,
       },
       xAxis: {
-        type: "category",
+        type: 'category',
         data: labels,
         axisLabel: {
-          rotate: 20
-        }
+          rotate: 20,
+        },
       },
       yAxis: [
         {
-          type: "value",
-          name: "체류시간 (초)"
+          type: 'value',
+          name: '체류시간 (초)',
         },
         {
-          type: "value",
-          name: "페이지뷰 수"
-        }
+          type: 'value',
+          name: '페이지뷰 수',
+        },
       ],
       series: [
         {
-          name: "평균 체류시간 (초)",
-          type: "bar",
+          name: '평균 체류시간 (초)',
+          type: 'bar',
           data: avgStayTimes,
-          barWidth: "15%",
-          itemStyle: { color: "#5B8FF9" }
+          barWidth: '15%',
+          itemStyle: { color: '#5B8FF9' },
         },
         {
-          name: "페이지뷰 수",
-          type: "line",
+          name: '페이지뷰 수',
+          type: 'line',
           yAxisIndex: 1,
           data: viewCounts,
-          itemStyle: { color: "#FF9900" }
-        }
-      ]
+          itemStyle: { color: '#FF9900' },
+        },
+      ],
     });
 
     const handleResize = () => chart.resize();
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
       chart.dispose();
     };
   }, [data]);
 
-  return <div ref={chartRef} style={{ width: "100%", height: "440px" }} />;
+  return <div ref={chartRef} style={{ width: '100%', height: '440px' }} />;
 }

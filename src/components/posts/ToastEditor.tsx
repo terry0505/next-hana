@@ -1,35 +1,39 @@
-import { Editor } from "@toast-ui/react-editor";
-import "@toast-ui/editor/dist/toastui-editor.css";
-import { useRef, useEffect } from "react";
-import { uploadImage } from "@/lib/firebase";
-import toastr from "toastr";
-import "toastr/build/toastr.min.css";
+'use client';
+
+import dynamic from 'next/dynamic';
+import { useRef, useEffect } from 'react';
+import { uploadImage } from '@/lib/firebase';
+import toastr from 'toastr';
+
+const Editor = dynamic(
+  () => import('@toast-ui/react-editor').then((mod) => mod.Editor),
+  {
+    ssr: false,
+  }
+);
 
 type Props = {
   content: string;
   setContent: (value: string) => void;
+  editorRef: React.RefObject<any>;
 };
 
-export default function ToastEditor({ content, setContent }: Props) {
-  const editorRef = useRef<Editor>(null);
-
+export default function ToastEditor({ content, setContent, editorRef }: Props) {
   const handleChange = () => {
     const markdown = editorRef.current?.getInstance().getMarkdown();
     if (markdown) setContent(markdown);
   };
 
   useEffect(() => {
-    if (editorRef.current) {
-      editorRef.current.getInstance().setMarkdown(content || "");
-    }
-  }, [content]);
+    editorRef.current?.getInstance().setMarkdown(content || '');
+  }, [content, editorRef]);
 
   return (
     <Editor
-      initialValue={content || ""}
-      previewStyle="vertical"
-      height="400px"
-      initialEditType="markdown"
+      initialValue={content || ''}
+      previewStyle='vertical'
+      height='400px'
+      initialEditType='markdown'
       useCommandShortcut={true}
       ref={editorRef}
       onChange={handleChange}
@@ -40,15 +44,19 @@ export default function ToastEditor({ content, setContent }: Props) {
         ) => {
           try {
             const imageUrl = await uploadImage(blob);
-            callback(imageUrl, "image");
-          } catch (error: any) {
+            callback(imageUrl, 'image');
+          } catch (error) {
             toastr.options = {
-              positionClass: "toast-bottom-center",
-              timeOut: 3000
+              positionClass: 'toast-bottom-center',
+              timeOut: 3000,
             };
-            toastr.error(error.message || "이미지 업로드에 실패했습니다.");
+            if (error instanceof Error) {
+              toastr.error(error.message);
+            } else {
+              toastr.error('이미지 업로드에 실패했습니다.');
+            }
           }
-        }
+        },
       }}
     />
   );
